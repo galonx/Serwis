@@ -1,0 +1,95 @@
+﻿@model List<Serwis.Models.ServiceRequestsViewModel>
+@{
+    ViewData["Title"] = "Zgłoszenia serwisowe";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="text-primary text-center">🛠️ Zgłoszenia serwisowe</h2>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center mt-4">
+                    Brak zgłoszeń serwisowych.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive mt-4">
+                    <table class="table table-hover table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Auto</th>
+                                <th>Data wizyty</th>
+                                <th>Opis problemu</th>
+                                <th>Serwis wykonano</th>
+                                <th>Opis usługi</th>
+                                <th>Data wykonania</th>
+                                @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                {
+                                    <th>Akcje</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var request in Model)
+                            {
+                                <tr>
+                                    <td>@request.CarDetails</td>
+                                    <td>@request.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@request.Description</td>
+                                    <td>
+                                        @if (request.IsServiceCompleted)
+                                        {
+                                            <span class="badge bg-success">Tak</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Nie</span>
+                                        }
+                                    </td>
+                                    <td>@(string.IsNullOrEmpty(request.ServiceNotes) ? "-" : request.ServiceNotes)</td>
+                                    <td>@(request.ServiceCompletionDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
+                                    @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                    {
+                                        <td>
+                                            <form asp-action="UpdateServiceStatus" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@request.Id" />
+
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="isCompleted" value="true" @(request.IsServiceCompleted ? "checked" : "") />
+                                                    <label class="form-check-label">Wykonano</label>
+                                                </div>
+
+                                                <input type="text" name="serviceNotes" placeholder="Opis usługi" class="form-control mb-2" value="@request.ServiceNotes" />
+                                                <input type="datetime-local" name="completionDate" class="form-control mb-2" value="@(request.ServiceCompletionDate?.ToString("yyyy-MM-ddTHH:mm") ?? "")" />
+
+                                                @if (User.IsInRole("Manager") && request.IsServiceCompleted)
+                                                {
+                                                    <span class="badge bg-secondary">Zatwierdzono</span>
+                                                }
+                                                else
+                                                {
+                                                    <button type="submit" class="btn btn-success btn-sm w-100">💾 Zapisz</button>
+                                                }
+                                            </form>
+
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <form asp-action="Delete" method="post" class="d-inline">
+                                                    <input type="hidden" name="id" value="@request.Id" />
+                                                    <button type="submit" class="btn btn-danger btn-sm w-100 mt-2">🗑️ Usuń</button>
+                                                </form>
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

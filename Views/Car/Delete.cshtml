@@ -1,0 +1,35 @@
+﻿@model Serwis.Models.CarModel
+
+@{
+    ViewData["Title"] = "Usuń auto";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5 text-center">
+                    <h2 class="text-danger">🗑️ Usuń auto</h2>
+                    <p class="mb-4">Czy na pewno chcesz usunąć to auto?</p>
+
+                    <div class="card bg-light p-3 mb-4">
+                        <p><strong>Numer VIN:</strong> @Model.VIN</p>
+                        <p><strong>Marka:</strong> @Model.Brand</p>
+                        <p><strong>Model:</strong> @Model.Model</p>
+                        <p><strong>Rocznik:</strong> @Model.Year</p>
+                        <p><strong>Typ silnika:</strong> @Model.EngineType</p>
+                        <p><strong>Pojemność:</strong> @Model.Capacity L</p>
+                    </div>
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-danger w-50">❌ Usuń</button>
+                            <a asp-action="Index" class="btn btn-secondary w-50">🔙 Anuluj</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

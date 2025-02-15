@@ -1,0 +1,35 @@
+﻿@model Serwis.Models.UserServiceHistoryViewModel
+
+@{
+    ViewData["Title"] = "Usuń zgłoszenie serwisowe";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5 text-center">
+                    <h2 class="text-danger">🗑️ Usuń zgłoszenie serwisowe</h2>
+                    <p class="mb-4">Czy na pewno chcesz usunąć to zgłoszenie?</p>
+
+                    <div class="card bg-light p-3 mb-4 text-start">
+                        <p><strong>Auto:</strong> @Model.CarDetails</p>
+                        <p><strong>Data wizyty:</strong> @Model.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</p>
+                        <p><strong>Opis problemu:</strong> @Model.Description</p>
+                        <p><strong>Serwis wykonano:</strong> @(Model.IsServiceCompleted ? "Tak" : "Nie")</p>
+                        <p><strong>Opis wykonanej usługi:</strong> @(string.IsNullOrEmpty(Model.ServiceNotes) ? "Brak" : Model.ServiceNotes)</p>
+                        <p><strong>Data wykonania serwisu:</strong> @(Model.ServiceCompletionDate?.ToString("yyyy-MM-dd HH:mm") ?? "Brak")</p>
+                    </div>
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-danger w-50">❌ Usuń</button>
+                            <a asp-action="Index" class="btn btn-secondary w-50">🔙 Anuluj</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

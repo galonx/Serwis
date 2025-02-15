@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Serwis.Models.UserManagerModel>
+
+@{
+    ViewData["Title"] = "Zarządzanie użytkownikami";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="text-primary text-center">👥 Zarządzanie użytkownikami</h2>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center mt-4">
+                    Brak zarejestrowanych użytkowników.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive mt-4">
+                    <table class="table table-hover table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th><a asp-action="Index" asp-route-sortOrder="@ViewData["IdSortParam"]">#</a></th>
+                                <th><a asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParam"]">📧 Email</a></th>
+                                <th><a asp-action="Index" asp-route-sortOrder="@ViewData["UserNameSortParam"]">👤 Username</a></th>
+                                <th><a asp-action="Index" asp-route-sortOrder="@ViewData["RoleSortParam"]">🔑 Rola</a></th>
+                                <th>⚙️ Opcje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>@user.Id</td>
+                                    <td>@user.Email</td>
+                                    <td>@user.UserName</td>
+                                    <td>
+                                        @if (!user.Roles.Contains("Manager"))
+                                        {
+                                            <a asp-action="AddRole" asp-route-id="@user.Id" asp-route-role="Manager" class="btn btn-success btn-sm w-100">➕ Ustaw serwisanta</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="RemoveRole" asp-route-id="@user.Id" asp-route-role="Manager" class="btn btn-warning btn-sm w-100">❌ Usuń serwisanta</a>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger btn-sm w-100">🗑️ Usuń</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

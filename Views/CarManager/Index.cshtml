@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Serwis.Models.CarManagerModel>
+
+@{
+    ViewData["Title"] = "Zarejestrowane Auta";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="text-primary text-center">🚗 Zarejestrowane Auta</h2>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center mt-4">
+                    Brak zarejestrowanych pojazdów.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive mt-4">
+                    <table class="table table-hover table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Użytkownik</th>
+                                <th>Numer VIN</th>
+                                <th>Marka</th>
+                                <th>Model</th>
+                                <th>Rocznik</th>
+                                <th>Silnik</th>
+                                <th>Pojemność</th>
+                                <th>Opcje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var car in Model)
+                            {
+                                <tr>
+                                    <td>@car.Id</td>
+                                    <td>@car.UserId</td>
+                                    <td>@car.VIN</td>
+                                    <td>@car.Brand</td>
+                                    <td>@car.Model</td>
+                                    <td>@car.Year</td>
+                                    <td>@car.EngineType</td>
+                                    <td>@car.Capacity</td>
+                                    <td>
+                                        @if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-warning btn-sm">✏️ Edytuj</a>
+                                        }
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a asp-action="Delete" asp-route-id="@car.Id" class="btn btn-danger btn-sm">🗑️ Usuń</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

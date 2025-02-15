@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Serwis.Models.ServiceModel>
+
+@{
+    ViewData["Title"] = "Umów się";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">Nasze serwisy w Poznaniu</h2>
+
+    <div class="row justify-content-center">
+        @foreach (var service in Model)
+        {
+            <div class="col-md-4 d-flex align-items-stretch">
+                <div class="card shadow-lg border-0 w-100">
+                    <img src="@service.ImagePath" class="card-img-top" alt="Serwis">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-dark">@service.Name</h5>
+                        <p class="card-text"><strong>Adres:</strong> @service.Address</p>
+                        <p class="card-text flex-grow-1">@service.Description</p>
+
+                        <form asp-action="SelectService" asp-controller="Service" method="post" class="mt-auto">
+                            <input type="hidden" name="serviceId" value="@service.Id" />
+                            <button type="submit" class="btn btn-primary w-100">Umów się</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@model Serwis.Models.CarModel
+
+@{
+    ViewData["Title"] = "Dodaj auto";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <h2 class="text-center text-primary">🚗 Dodaj auto</h2>
+
+                    <form asp-action="Create" method="post">
+                        <input type="hidden" asp-for="UserId" />
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="VIN" class="form-control" required pattern="[A-HJ-NPR-Z0-9]{17}"
+                                   title="VIN musi składać się z 17 znaków (bez liter I, O, Q)" placeholder="Wprowadź numer VIN" />
+                            <label asp-for="VIN">Numer VIN</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Brand" class="form-control" required placeholder="Marka pojazdu" />
+                            <label asp-for="Brand">Marka</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Model" class="form-control" required placeholder="Model pojazdu" />
+                            <label asp-for="Model">Model</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Year" value="2000" type="number" class="form-control" required min="1950" max="2050" placeholder="Rok produkcji" />
+                            <label asp-for="Year">Rocznik</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <select asp-for="EngineType" class="form-control" required>
+                                <option value="">Wybierz typ silnika</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Benzyna">Benzyna</option>
+                                <option value="Hybryda">Hybryda</option>
+                                <option value="Elektryczny">Elektryczny</option>
+                            </select>
+                            <label asp-for="EngineType">Typ silnika</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Capacity" value="1.8" type="number" step="0.1" class="form-control" required min="0.5" max="10.0" placeholder="Pojemność silnika" />
+                            <label asp-for="Capacity">Pojemność silnika</label>
+                        </div>
+
+                        <button type="submit" class="w-100 btn btn-lg btn-success">➕ Dodaj auto</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

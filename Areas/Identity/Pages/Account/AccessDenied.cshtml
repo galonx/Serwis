@@ -1,0 +1,18 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Odmowa dostępu";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5 text-center">
+                    <h1 class="text-danger">⛔ @ViewData["Title"]</h1>
+                    <p class="text-dark fs-5">Nie masz uprawnień do tego zasobu.</p>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">🏠 Powrót do strony głównej</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

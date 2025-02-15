@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Serwis.Models.CarModel>
+
+@{
+    ViewData["Title"] = "Moje Auta";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="text-primary">Moje Auta</h2>
+                <a asp-action="Create" class="btn btn-primary">➕ Dodaj nowe auto</a>
+            </div>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center">Nie masz jeszcze dodanych pojazdów.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Numer VIN</th>
+                                <th>Marka</th>
+                                <th>Model</th>
+                                <th>Rocznik</th>
+                                <th>Silnik</th>
+                                <th>Pojemność</th>
+                                <th>Opcje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var car in Model)
+                            {
+                                <tr>
+                                    <td>@car.VIN</td>
+                                    <td>@car.Brand</td>
+                                    <td>@car.Model</td>
+                                    <td>@car.Year</td>
+                                    <td>@car.EngineType</td>
+                                    <td>@car.Capacity</td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-warning btn-sm">✏️ Edytuj</a>
+                                        <a asp-action="Delete" asp-route-id="@car.Id" class="btn btn-danger btn-sm">🗑️ Usuń</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

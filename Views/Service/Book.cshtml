@@ -1,0 +1,59 @@
+﻿@model Serwis.Models.AppointmentViewModel
+
+@{
+    ViewData["Title"] = "Umów wizytę";
+    var service = ViewData["SelectedService"] as Serwis.Models.ServiceModel;
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <h2 class="text-center text-primary">Umów wizytę w serwisie</h2>
+                    <h4 class="text-center text-dark">@service?.Name</h4>
+                    <p class="text-center"><strong>Adres:</strong> @service?.Address</p>
+                    <p class="text-center">@service?.Description</p>
+
+                    @if (!Model.UserCars.Any())
+                    {
+                        <div class="alert alert-warning text-center">Nie masz jeszcze dodanego auta.</div>
+                        <div class="text-center">
+                            <a asp-action="Create" asp-controller="Car" class="btn btn-success">Dodaj auto</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-action="BookPost" asp-controller="Service" method="post">
+                            <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+                            <input type="hidden" asp-for="ServiceId" value="@Model.ServiceId" />
+
+                            <div class="form-floating mb-3">
+                                <select asp-for="CarId" class="form-control" required>
+                                    @foreach (var car in Model.UserCars)
+                                    {
+                                        <option value="@car.Id">@car.Brand @car.Model (@car.VIN)</option>
+                                    }
+                                </select>
+                                <label for="CarId">Wybierz auto</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="datetime-local" asp-for="AppointmentDate" class="form-control" required
+                                       value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                                <label for="AppointmentDate">Wybierz datę i godzinę</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <textarea asp-for="Description" class="form-control" rows="4" required></textarea>
+                                <label for="Description">Opis problemu</label>
+                            </div>
+
+                            <button type="submit" class="w-100 btn btn-lg btn-primary">Umów wizytę</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

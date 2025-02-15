@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Serwis.Models.UserServiceHistoryViewModel>
+
+@{
+    ViewData["Title"] = "Historia wizyt serwisowych";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h2 class="text-primary text-center">🛠️ Historia wizyt serwisowych</h2>
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center mt-4">
+                    Nie masz jeszcze żadnych wizyt serwisowych.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive mt-4">
+                    <table class="table table-hover table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Auto</th>
+                                <th>Data wizyty</th>
+                                <th>Opis problemu</th>
+                                <th>Serwis wykonano</th>
+                                <th>Opis wykonanej usługi</th>
+                                <th>Data wykonania serwisu</th>
+                                <th>Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var appointment in Model)
+                            {
+                                <tr>
+                                    <td>@appointment.CarDetails</td>
+                                    <td>@appointment.AppointmentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@appointment.Description</td>
+                                    <td>
+                                        @if (appointment.IsServiceCompleted)
+                                        {
+                                            <span class="badge bg-success">Tak</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Nie</span>
+                                        }
+                                    </td>
+                                    <td>@(string.IsNullOrEmpty(appointment.ServiceNotes) ? "-" : appointment.ServiceNotes)</td>
+                                    <td>@(appointment.ServiceCompletionDate.HasValue ? appointment.ServiceCompletionDate.Value.ToString("yyyy-MM-dd HH:mm") : "-")</td>
+                                    <td>
+                                        @if (!appointment.IsServiceCompleted)
+                                        {
+                                            <a asp-action="Delete" asp-route-id="@appointment.Id" class="btn btn-danger btn-sm">🗑️ Usuń</a>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Zatwierdzono</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
